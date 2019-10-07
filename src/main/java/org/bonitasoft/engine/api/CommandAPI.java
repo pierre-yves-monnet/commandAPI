@@ -104,11 +104,12 @@ public interface CommandAPI {
 
 
     /**
-     * Add a dependency to the tenant scope. There is no unicity in the Dependencies table. Multiple JAR may exist with the same name/version. Its the responsibility of the developer to check first is a dependency already exists.
+     * Add a dependency to the tenant scope. Unicity in the Dependencies table is name + version. 
      *
      * @param name
-     *        The name of the dependency. Name is unique for a dependency. When a dependency has multiple version, you are suppose to load the last version of the dependency
-     *        Note: name is not unique. Multiple JAR file may exist with the same name
+     *        The name of the dependency. When a dependency has multiple version, you are suppose to load the last version of the dependency
+     *        Else, use the addDependency() with name / version.
+     *        This method keep the version as null
      * @param jar
      *        The JAR content of the dependency.
      * @throws org.bonitasoft.engine.session.InvalidSessionException
@@ -122,7 +123,8 @@ public interface CommandAPI {
     DependencyDescriptor addDependency(String name, byte[] jar) throws AlreadyExistsException, CreationException;
 
     /**
-     * Add a dependency to the tenant scope, with full description. There is no unicity in the Dependencies table. Multiple JAR may exist with the same name/version. Its the responsibility of the developer to check first is a dependency already exists. 
+     *  Add a dependency to the tenant scope, with full description. Unicity is the name/version. Multiple JAR may exist for the same name. Its the responsibility of the developer to ensure a JAR exists only in the last version.
+     * There is no relation between a command and a dependency. A command access all dependencies. The developer must ensure that two versions of the same dependency exist 
      * @param name          Name of dependencies 
      * @param version       Version of the Jar File
      * @param fileName      Complete fileName
@@ -140,6 +142,13 @@ public interface CommandAPI {
      * @param descriptor
      */
     public DependencyDescriptor getDependency( Long idDependency );
+
+    /**
+     * For a name, return the list of dependency found (same name, different version). Before deploying a version, the developper can check existing dependency, to ensure to not load a previouw version for example.     
+     * @param name
+     * @param descriptor
+     */
+    public List<DependencyDescriptor> searchDependencyByName( String name );
 
     /**
      * get the content of the dependency. 
