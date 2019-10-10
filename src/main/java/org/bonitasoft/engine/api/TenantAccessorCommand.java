@@ -29,7 +29,7 @@ public abstract class TenantAccessorCommand extends TenantCommand {
      * @param apiAccessor
      * @return
      */
-    public abstract Serializable afterDeployment(APIAccessor apiAccessor);
+    public abstract Serializable afterRegister(APIAccessor apiAccessor);
     
     /**
      * Before the unregister, the command Engine calls this method. The command can then do anything useful to unregister the command completely  

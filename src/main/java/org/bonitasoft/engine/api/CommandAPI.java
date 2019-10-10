@@ -143,13 +143,7 @@ public interface CommandAPI {
      */
     public DependencyDescriptor getDependency( Long idDependency );
 
-    /**
-     * For a name, return the list of dependency found (same name, different version). Before deploying a version, the developper can check existing dependency, to ensure to not load a previouw version for example.     
-     * @param name
-     * @param descriptor
-     */
-    public List<DependencyDescriptor> searchDependencyByName( String name );
-
+  
     /**
      * get the content of the dependency. 
      * @param name
@@ -167,13 +161,18 @@ public interface CommandAPI {
     void updateDependency(Long idDependency, DependencyUpdater updateDescriptor) throws UpdateException;
 
     /**
-     * getAllDependency store in the database
-     * @param startIndex
-     * @param maxResults
-     * @param sort
+     * For a name, return the list of dependency found (same name, different version). Before deploying a version, the developper can check existing dependency, to ensure to not load a previouw version for example.     
+     * @param name
+     * @param descriptor
+     */
+    public List<DependencyDescriptor> searchDependencyByName( String name, int startIndex, int maxResults);
+
+    /**
+     * searchDependencies store in the database
+     * @param searchOptions
      * @return
      */
-    List<DependencyDescriptor> getAllDependencies(int startIndex, int maxResults, DependencyCriterion sort);
+    SearchResult<DependencyDescriptor> searchDependencies(SearchOptions searchOptions);
 
     /**
      * remove a dependency from it's id
